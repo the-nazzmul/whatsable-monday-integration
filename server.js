@@ -16,3 +16,12 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
+// routes
+app.use("/auth", authRoutes);
+app.use("/webhooks", webhookRoutes);
+app.use("/integration", integrationRoutes);
+
+app.listen(PORT, () => {
+  console.log(`WhatsAble Monday.com app is running on port ${PORT}`);
+});
