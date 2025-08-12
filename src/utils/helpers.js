@@ -64,9 +64,27 @@ function cleanPhoneForStorage(phone) {
   return phone ? phone.replace(/\D/g, "") : "";
 }
 
+/**
+ * Generate default message templates
+ */
+function generateDefaultMessage(eventType, itemName, boardName) {
+  const templates = {
+    item_created: `🆕 New item created: "${itemName}" in board "${boardName}"`,
+    item_updated: `✏️ Item updated: "${itemName}" in board "${boardName}"`,
+    status_changed: `📋 Status changed for: "${itemName}" in board "${boardName}"`,
+    column_changed: `📝 Column updated in: "${itemName}" in board "${boardName}"`,
+  };
+
+  return (
+    templates[eventType] ||
+    `📌 Update for: "${itemName}" in board "${boardName}"`
+  );
+}
+
 module.exports = {
   formatPhoneNumber,
   isValidPhoneNumber,
   extractPhoneFromItem,
   cleanPhoneForStorage,
+  generateDefaultMessage,
 };

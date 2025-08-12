@@ -1,0 +1,112 @@
+{
+  "name": "WhatsAble Integration",
+  "description": "Send WhatsApp messages through WhatsAble when Monday.com items are created or updated",
+  "version": "1.0.0",
+  "author": "WhatsAble",
+  "scopes": ["boards:read", "items:read", "updates:write", "webhooks:write"],
+  "webhooks": {
+    "subscriptions": ["create_item", "change_column_value", "create_update"]
+  },
+  "features": [
+    {
+      "type": "integration_recipe",
+      "name": "Send WhatsApp on Item Create",
+      "description": "Automatically send a WhatsApp message when a new item is created",
+      "trigger": {
+        "type": "create_item"
+      },
+      "action": {
+        "type": "custom_action",
+        "url": "/integration/send-on-create",
+        "method": "POST"
+      },
+      "input_fields": [
+        {
+          "name": "itemId",
+          "type": "item_id",
+          "required": true
+        },
+        {
+          "name": "customMessage",
+          "type": "text",
+          "required": false,
+          "placeholder": "Custom message (optional)"
+        }
+      ]
+    },
+    {
+      "type": "integration_recipe",
+      "name": "Send WhatsApp on Item Update",
+      "description": "Send a WhatsApp message when an item is updated",
+      "trigger": {
+        "type": "change_column_value"
+      },
+      "action": {
+        "type": "custom_action",
+        "url": "/integration/send-on-update",
+        "method": "POST"
+      },
+      "input_fields": [
+        {
+          "name": "itemId",
+          "type": "item_id",
+          "required": true
+        },
+        {
+          "name": "columnId",
+          "type": "column_id",
+          "required": false
+        },
+        {
+          "name": "customMessage",
+          "type": "text",
+          "required": false,
+          "placeholder": "Custom message (optional)"
+        }
+      ]
+    },
+    {
+      "type": "integration_recipe",
+      "name": "Send WhatsApp Template",
+      "description": "Send a WhatsApp template message",
+      "trigger": {
+        "type": "manual"
+      },
+      "action": {
+        "type": "custom_action",
+        "url": "/integration/send-template",
+        "method": "POST"
+      },
+      "input_fields": [
+        {
+          "name": "itemId",
+          "type": "item_id",
+          "required": true
+        },
+        {
+          "name": "templateName",
+          "type": "text",
+          "required": true,
+          "placeholder": "Template name"
+        },
+        {
+          "name": "templateVariables",
+          "type": "text",
+          "required": false,
+          "placeholder": "Template variables as JSON"
+        }
+      ]
+    },
+    {
+      "type": "board_view",
+      "name": "WhatsAble Settings",
+      "description": "Configure WhatsAble integration settings",
+      "url": "/settings",
+      "icon": "https://your-domain.com/icon.png"
+    }
+  ],
+  "oauth": {
+    "redirect_uri": "/auth/callback",
+    "scopes": ["boards:read", "items:read", "updates:write", "webhooks:write"]
+  }
+}

@@ -1,17 +1,19 @@
 const axios = require("axios");
-const { formatPhoneNumber, isValidPhoneNumber } = require("../utils/helper");
+const { formatPhoneNumber, isValidPhoneNumber } = require("../utils/helpers");
 
-class WhatsAbleServices {
+class WhatsAbleService {
   constructor(apiKey) {
     this.apiKey = apiKey;
     this.apiUrl = process.env.WHATSABLE_API_URL || "https://api.whatsable.app";
   }
+
   async sendMessage(phone, message, template = null, variables = {}) {
     const formattedPhone = formatPhoneNumber(phone);
 
     if (!isValidPhoneNumber(formattedPhone)) {
       throw new Error(`Invalid phone number: ${phone}`);
     }
+
     try {
       const payload = {
         phone: formattedPhone,
@@ -26,9 +28,10 @@ class WhatsAbleServices {
       const response = await axios.post(`${this.apiUrl}/send`, payload, {
         headers: {
           Authorization: `Bearer ${this.apiKey}`,
-          "Content-Type": `application/json`,
+          "Content-Type": "application/json",
         },
       });
+
       return response.data;
     } catch (error) {
       console.error(
@@ -50,7 +53,7 @@ class WhatsAbleServices {
       const response = await axios.post(
         `${this.apiUrl}/send-template`,
         {
-          phone: this.formatPhoneNumber(phone),
+          phone: formattedPhone,
           template: templateName,
           variables,
         },
@@ -89,4 +92,4 @@ class WhatsAbleServices {
   }
 }
 
-module.exports = WhatsAbleServices;
+module.exports = WhatsAbleService;
